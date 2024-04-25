@@ -43,7 +43,7 @@
                 <ImageView
                     android:layout_width="46dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:src="@mipmap/username" />
 
                 <EditText
                     android:id="@+id/et_register_AccountName"
@@ -74,7 +74,7 @@
                 <ImageView
                     android:layout_width="46dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:src="@mipmap/userpwd" />
 
                 <EditText
                     android:id="@+id/et_Register_Password"
@@ -105,7 +105,7 @@
                 <ImageView
                     android:layout_width="46dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:src="@mipmap/userpwd" />
 
                 <EditText
                     android:id="@+id/et_Register_Password2"

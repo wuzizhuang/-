@@ -44,7 +44,7 @@ public class ListModel {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.name = name;
-        this.photo= R.drawable.ic_launcher_background;
+        this.photo= R.mipmap.next;
         //this.address = address;
         //this.position = position;
     }
@@ -64,6 +64,7 @@ public class ListModel {
         this.phoneNumber = phoneNumber;
         this.name = name;
         this.layout_page = layout_page;
+        this.photo= R.mipmap.next;
         //this.address = address;
         //this.position = position;
     }

@@ -5,5 +5,8 @@
     <string name="account_name_hint">请输入用户名</string>
     <string name="account_password_hint">请输入用户密码</string>
 
+    <string name="login_title">欢迎来到通讯录管理系统</string>
+    <string name="login_name">通讯录管理系统</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

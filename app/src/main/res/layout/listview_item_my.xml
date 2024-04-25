@@ -32,8 +32,8 @@
                 android:id="@+id/list_item_my_photo"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginLeft="230dp"
-                android:src="@drawable/ic_launcher_background" />
+                android:layout_marginLeft="220dp"
+                android:src="@mipmap/next" />
         </LinearLayout>
     </LinearLayout>
     <View
