@@ -32,7 +32,9 @@ public class ListModel {
     private String position;
     private Class<?> layout_page;
     private int photo;
-
+    public ListModel() {
+        this.collect="-1";
+    }
     public ListModel(Integer id, String phoneNumber, String name) {
         this.id = id;
         this.phoneNumber = phoneNumber;
@@ -47,6 +49,17 @@ public class ListModel {
         this.photo= R.mipmap.next;
         //this.address = address;
         //this.position = position;
+    }
+    public ListModel(Integer id, String name, String phoneNumber,String email,String birthday,String home,String collect) {
+        this.id = id;
+        this.phoneNumber = phoneNumber;
+        this.name = name;
+        this.home = home;
+        this.birthday = birthday;
+        this.email = email;
+        this.collect = collect;
+
+
     }
     public ListModel(Integer id, String phoneNumber, String name,String home,String birthday,String email,String collect,String beizhu) {
         this.id = id;
@@ -119,4 +132,38 @@ public class ListModel {
     public void setLayout_page(Class<?> layout_page) {
         this.layout_page = layout_page;
     }
+    public String getBirthday() {
+        return birthday;
+    }
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+    public String getHome() {
+        return home;
+    }
+    public void setHome(String home) {
+        this.home = home;
+    }
+    public String getCollect() {
+        return collect;
+    }
+    public void setCollect(String collect) {
+        this.collect = collect;
+    }
+    public String getBeizhu() {
+        return beizhu;
+    }
+    public void setBeizhu(String beizhu) {
+        this.beizhu = beizhu;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setPhoto(Integer photo) {
+        this.photo = photo;
+    }
+
 }

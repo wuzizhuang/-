@@ -40,10 +40,13 @@
             android:name=".Activity.PrivateSettingFirstActivity"
             android:exported="true" />
         <activity
-            android:name=".Activity.PrivateSettingSecondActivity"
+            android:name="com.example.kese.Activity.PrivateSettingSecondActivity"
             android:exported="true" />
         <activity
             android:name=".Activity.PrivateSettingThirdActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activity.selectResultActivity"
             android:exported="true" />
     </application>
 

@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kese.Listener.OnClickListener;
 import com.example.kese.R;
 import com.example.kese.entity.CollectBoxEntity;
 
@@ -22,6 +24,10 @@ public class CollectBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public CollectBoxAdapter(Context context, List<CollectBoxEntity> data){
         this.mContext = context;
         this.mData = data;
+    }
+    private OnClickListener onClickListener;
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
     @NonNull
     @Override
@@ -39,6 +45,21 @@ public class CollectBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         viewHolder.TvName.setText(collectBoxEntity.getName());
         viewHolder.TvPhoneNumber.setText(collectBoxEntity.getPhoneNumber());
 
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //点击事件
+                onClickListener.onClick(view, position);
+            }
+        });
+        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                //长按事件
+
+                return false;
+            }
+        });
     }
 
     @Override
@@ -46,7 +67,7 @@ public class CollectBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return mData.size();//返回数据源的长度
     }
 
-    static  class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView TvName;
         private TextView TvPhoneNumber;
 
@@ -54,6 +75,7 @@ public class CollectBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(view);
             TvName=view.findViewById(R.id.list_item_collect_name);
             TvPhoneNumber=view.findViewById(R.id.list_item_collect_phoneNumber);
+
         }
     }
 }

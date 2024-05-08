@@ -118,10 +118,10 @@ public class PrivateFragment extends Fragment {
     {
 
         ArrayList<ListModel> arrayList=new ArrayList<ListModel>();
-        String setting_1 ="设置";
+        String setting_1 ="添加";
         arrayList.add(new ListModel(1, setting_1 , setting_1, PrivateSettingFirstActivity.class));
 
-        String setting_2 ="设置";
+        String setting_2 ="修改分组";
         arrayList.add(new ListModel(2, setting_1 , setting_2, PrivateSettingSecondActivity.class));
 
         String setting_3 ="设置";

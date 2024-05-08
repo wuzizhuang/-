@@ -27,6 +27,7 @@ public class MyDataHelper extends SQLiteOpenHelper {
     public static final String COLUME_EMAIL = "email";          //email
     public static final String COLUME_BIRTHDAY = "birthday";    //birthday
     public static final String COLUME_HOME= "home";             //家庭地址
+    public static final String COLUME_ATTENTION="attention";
     public static final String COLUME_COLLECT="collect";        //收藏组
     public static final String COLUME_BEIZHU="beizhu";          //备注
 
@@ -43,7 +44,8 @@ public class MyDataHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE " + TABLE_NAME+ " (" + COLUME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+        String sql = "CREATE TABLE " + TABLE_NAME+ " ("
+                + COLUME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUME_NUMBER + " TEXT,"
                 + COLUME_ADDRESS + " TEXT,"
                 + COLUME_PinYin + " TEXT,"
@@ -123,6 +125,10 @@ public class MyDataHelper extends SQLiteOpenHelper {
         cv.put(COLUME_ID,listModel.getId());
         cv.put(COLUME_NUMBER,listModel.getPhoneNumber());
         cv.put(COLUME_ADDRESS,listModel.getName());
+        cv.put(COLUME_BIRTHDAY,listModel.getBirthday());
+        cv.put(COLUME_EMAIL,listModel.getEmail());
+        cv.put(COLUME_HOME,listModel.getHome());
+        cv.put(COLUME_COLLECT,listModel.getCollect());
         int update=db.update(TABLE_NAME,cv,COLUME_NUMBER+"=?",new String[]{String.valueOf(listModel.getPhoneNumber())});
         db.close();
 
@@ -224,6 +230,40 @@ public class MyDataHelper extends SQLiteOpenHelper {
             arrayList.add(new ListModel(id,number,nam,1));
         }
 
+        return arrayList;
+    }
+    public ArrayList<ListModel> getList_byselect(String Select){
+        SQLiteDatabase db =this.getReadableDatabase();
+        ArrayList<ListModel> arrayList=new ArrayList<ListModel>();
+        String sql="SELECT * FROM " + TABLE_NAME + " WHERE " + COLUME_COLLECT + " = ?";
+        Cursor cursor = db.rawQuery(sql, new String[]{Select});
+
+        while (cursor.moveToNext()) {
+            int idIndex = cursor.getColumnIndex(COLUME_ID);
+            int numberIndex = cursor.getColumnIndex(COLUME_NUMBER);
+            int addressIndex = cursor.getColumnIndex(COLUME_ADDRESS);
+            int id = cursor.getInt(idIndex);
+            String nam = cursor.getString(addressIndex);
+            String number = cursor.getString(numberIndex);
+            arrayList.add(new ListModel(id,number,nam,1));
+        }
+        return arrayList;
+    }
+    public ArrayList<ListModel> getList_byselect_Null(String select){
+        SQLiteDatabase db =this.getReadableDatabase();
+        ArrayList<ListModel> arrayList=new ArrayList<ListModel>();
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUME_COLLECT + " IS NULL";
+        Cursor cursor = db.rawQuery(sql, null);
+
+        while (cursor.moveToNext()) {
+            int idIndex = cursor.getColumnIndex(COLUME_ID);
+            int numberIndex = cursor.getColumnIndex(COLUME_NUMBER);
+            int addressIndex = cursor.getColumnIndex(COLUME_ADDRESS);
+            int id = cursor.getInt(idIndex);
+            String nam = cursor.getString(addressIndex);
+            String number = cursor.getString(numberIndex);
+            arrayList.add(new ListModel(id,number,nam,1));
+        }
         return arrayList;
     }
 
