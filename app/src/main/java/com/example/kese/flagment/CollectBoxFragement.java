@@ -52,7 +52,7 @@ public class CollectBoxFragement extends Fragment {
         List<CollectBoxEntity> datas=new ArrayList<>();
 
         if(title=="收藏"){
-            listModels=getData();
+            listModels=getData_attention();
             for(int i =0;i<listModels.size();i++){
                 ListModel listModel=listModels.get(i);
                 CollectBoxEntity entity=new CollectBoxEntity();
@@ -121,6 +121,12 @@ public class CollectBoxFragement extends Fragment {
         myDataHelper.close();
         return listModels;
     }
-
+    private List<ListModel> getData_attention(){
+        myDataHelper=new MyDataHelper(getContext());
+        ArrayList<ListModel> listModels;
+        listModels = myDataHelper.getList_byattention("1");
+        myDataHelper.close();
+        return listModels;
+    }
 
 }

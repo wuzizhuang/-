@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,9 @@ import com.example.kese.util.DataBaseHelper;
 import com.example.kese.util.MyDataHelper;
 import com.example.kese.util.StringUtils;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class UpdataActivity extends BaseActivity {
 
     private TextView upData_name;
@@ -29,13 +34,18 @@ public class UpdataActivity extends BaseActivity {
     private TextView upData_home;
     private TextView upData_select;
 
+    private String upData_attention;
+    private String phoneNumber;
+    private String name;
+
+    private Switch aSwitch;
     private Button upData_button;
-    Intent intent;
-    int id;
-    String phoneNumber;
-    String name;
+    private Intent intent;
+    private int id;
 
-
+    private MyDataHelper db;
+    private ListModel listModel;
+    private ArrayList<ListModel> listModels;
 
     @Override
     protected int initLayout() {
@@ -54,15 +64,40 @@ public class UpdataActivity extends BaseActivity {
         upData_phoneNumber=findViewById(R.id.upData_phone);
         upData_birthday=findViewById(R.id.upData_birthday);
         upData_email=findViewById(R.id.upData_email);
-        upData_address=findViewById(R.id.upData_address);
+        upData_address=findViewById(R.id.upData_workaddress);
         upData_home=findViewById(R.id.upData_home);
         upData_select=findViewById(R.id.upData_select);
+        aSwitch=findViewById(R.id.upData_attention);
+
+
+        db=new MyDataHelper(this);
+        listModel=db.getOne_ByNumber(phoneNumber);
+
         upData_name.setText(name);
         upData_phoneNumber.setText(phoneNumber);
+        upData_address.setText(listModel.getAddress());
+        upData_email.setText(listModel.getEmail());
+        upData_birthday.setText(listModel.getBirthday());
+        upData_home.setText(listModel.getHome());
+        upData_select.setText(listModel.getCollect());
+
+        aSwitch.setChecked(listModel.getAttention().equals("1"));
     }
 
     @Override
     protected void initData() {
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    upData_attention="1";
+                    // 用户选择了“是”
+                } else {
+                    upData_attention="0";
+                    // 用户选择了“否”
+                }
+            }
+        });
         upData_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +107,9 @@ public class UpdataActivity extends BaseActivity {
                         upData_email.getText().toString(),
                         upData_birthday.getText().toString(),
                         upData_home.getText().toString(),
-                        upData_select.getText().toString()
+                        upData_select.getText().toString(),
+                        upData_attention
+
                 );
                 MyDataHelper myDataHelper=new MyDataHelper(UpdataActivity.this);
                 myDataHelper.getWritableDatabase();

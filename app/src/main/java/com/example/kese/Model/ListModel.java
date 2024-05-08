@@ -29,6 +29,7 @@ public class ListModel {
     private String collect;     //收藏组
     private String beizhu;      //备注
     private String email;       //email
+    private String attention;   //收藏
     private String position;
     private Class<?> layout_page;
     private int photo;
@@ -61,7 +62,18 @@ public class ListModel {
 
 
     }
-    public ListModel(Integer id, String phoneNumber, String name,String home,String birthday,String email,String collect,String beizhu) {
+    public ListModel(Integer id, String name, String phoneNumber,String email,String birthday,String home,String collect,String attention) {
+        this.id = id;
+        this.phoneNumber = phoneNumber;
+        this.name = name;
+        this.home = home;
+        this.birthday = birthday;
+        this.email = email;
+        this.collect = collect;
+        this.attention=attention;
+        this.photo=R.mipmap.next;
+    }
+    public ListModel(Integer id, String phoneNumber, String name,String home,String birthday,String email,String collect,String beizhu,String attention) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.name = name;
@@ -70,8 +82,10 @@ public class ListModel {
         this.email = email;
         this.collect = collect;
         this.beizhu = beizhu;
-
+        this.attention=attention;
+        this.photo=R.mipmap.next;
     }
+
     public ListModel(Integer id, String phoneNumber, String name,Class<?> layout_page) {
         this.id = id;
         this.phoneNumber = phoneNumber;
@@ -164,6 +178,12 @@ public class ListModel {
     }
     public void setPhoto(Integer photo) {
         this.photo = photo;
+    }
+    public String getAttention() {
+        return attention;
+    }
+    public void setAttention(String attention) {
+        this.attention = attention;
     }
 
 }

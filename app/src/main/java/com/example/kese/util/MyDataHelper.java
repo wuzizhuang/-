@@ -26,9 +26,10 @@ public class MyDataHelper extends SQLiteOpenHelper {
     public static final String COLUME_PinYin = "pinyin";      //拼音
     public static final String COLUME_EMAIL = "email";          //email
     public static final String COLUME_BIRTHDAY = "birthday";    //birthday
+    public static final String COLUME_WORK= "work";             //工作单位
     public static final String COLUME_HOME= "home";             //家庭地址
-    public static final String COLUME_ATTENTION="attention";
-    public static final String COLUME_COLLECT="collect";        //收藏组
+    public static final String COLUME_ATTENTION="attention";    //收藏
+    public static final String COLUME_COLLECT="collect";        //分类组
     public static final String COLUME_BEIZHU="beizhu";          //备注
 
 
@@ -53,6 +54,8 @@ public class MyDataHelper extends SQLiteOpenHelper {
                 + COLUME_BIRTHDAY + " TEXT,"
                 + COLUME_HOME + " TEXT,"
                 + COLUME_COLLECT + " TEXT,"
+                + COLUME_WORK + " TEXT,"
+                + COLUME_ATTENTION + " TEXT,"
                 + COLUME_BEIZHU + " TEXT);";
         db.execSQL(sql);
     }
@@ -79,7 +82,8 @@ public class MyDataHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(COLUME_NUMBER,listModel.getPhoneNumber());
         cv.put(COLUME_ADDRESS,listModel.getName());
-       // cv.put(COLUME_PinYin , StringUtils.getInitials(listModel.getName()));
+
+       cv.put(COLUME_PinYin , StringUtils.getInitials(listModel.getName()));
         if(listModel.getPhoneNumber().equals("")||listModel.getName().equals(""))
         {
             return "fail";
@@ -129,6 +133,8 @@ public class MyDataHelper extends SQLiteOpenHelper {
         cv.put(COLUME_EMAIL,listModel.getEmail());
         cv.put(COLUME_HOME,listModel.getHome());
         cv.put(COLUME_COLLECT,listModel.getCollect());
+        cv.put(COLUME_BEIZHU,listModel.getBeizhu());
+        cv.put(COLUME_ATTENTION,listModel.getAttention());
         int update=db.update(TABLE_NAME,cv,COLUME_NUMBER+"=?",new String[]{String.valueOf(listModel.getPhoneNumber())});
         db.close();
 
@@ -137,7 +143,35 @@ public class MyDataHelper extends SQLiteOpenHelper {
         }
         return "success";
     }
+    public ListModel getOne_ByNumber(String number){
+        ListModel listModel = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM LIST WHERE number = ?", new String[]{number});
+        if(cursor.moveToFirst()){
+            int idIndex = cursor.getColumnIndex(COLUME_ID);
+            int numberIndex = cursor.getColumnIndex(COLUME_NUMBER);
+            int addressIndex = cursor.getColumnIndex(COLUME_ADDRESS);
+            int homeIndex = cursor.getColumnIndex(COLUME_HOME);
+            int birthdayIndex = cursor.getColumnIndex(COLUME_BIRTHDAY);
+            int emailIndex = cursor.getColumnIndex(COLUME_EMAIL);
+            int collectIndex = cursor.getColumnIndex(COLUME_COLLECT);
+            int attentionIndex = cursor.getColumnIndex(COLUME_ATTENTION);
 
+            int id = cursor.getInt(idIndex);
+            String name = cursor.getString(addressIndex);
+            String phoneNumber = cursor.getString(numberIndex);
+            String home = cursor.getString(homeIndex);
+            String birthday = cursor.getString(birthdayIndex);
+            String email = cursor.getString(emailIndex);
+            String collect = cursor.getString(collectIndex);
+            String attention = cursor.getString(attentionIndex);
+            listModel = new ListModel(id,phoneNumber,name,email,birthday,home,collect,attention);
+            cursor.close();
+            db.close();
+
+        }
+        return listModel;
+    }
     public List<ListModel> getAll()
     {
         ListModel listModel;
@@ -266,31 +300,55 @@ public class MyDataHelper extends SQLiteOpenHelper {
         }
         return arrayList;
     }
+    public ArrayList<ListModel> getList_byattention(String Attention){
+        SQLiteDatabase db =this.getReadableDatabase();
+        ArrayList<ListModel> arrayList=new ArrayList<ListModel>();
+        String sql="SELECT * FROM " + TABLE_NAME + " WHERE " + COLUME_ATTENTION + " = ?";
+        Cursor cursor = db.rawQuery(sql, new String[]{Attention});
 
+        while (cursor.moveToNext()) {
+            int idIndex = cursor.getColumnIndex(COLUME_ID);
+            int numberIndex = cursor.getColumnIndex(COLUME_NUMBER);
+            int addressIndex = cursor.getColumnIndex(COLUME_ADDRESS);
+            int id = cursor.getInt(idIndex);
+            String nam = cursor.getString(addressIndex);
+            String number = cursor.getString(numberIndex);
+            arrayList.add(new ListModel(id,number,nam,1));
+        }
+        return arrayList;
+    }
     public ArrayList<ListModel> getAllList_byPhoneNumber(String phoneNumber)
     {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<ListModel> arrayList=new ArrayList<ListModel>();
-        String sql = "SELECT * FROM " + COLUME_NUMBER + " WHERE phoneNumber LIKE '%number%'";
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE "+COLUME_NUMBER+" =? ";
 
         // 准备参数化查询，避免 SQL 注入风险
-        String[] selectionArgs = { phoneNumber };
 
-        Cursor cursor = db.rawQuery(sql, selectionArgs);
+
+        Cursor cursor = db.rawQuery(sql, new String[]{phoneNumber});
 
         while(cursor.moveToNext())
         {
             int idIndex = cursor.getColumnIndex(COLUME_ID);
             int numberIndex = cursor.getColumnIndex(COLUME_NUMBER);
             int addressIndex = cursor.getColumnIndex(COLUME_ADDRESS);
+            int homeIndex = cursor.getColumnIndex(COLUME_HOME);
+            int birthdayIndex = cursor.getColumnIndex(COLUME_BIRTHDAY);
+            int emailIndex = cursor.getColumnIndex(COLUME_EMAIL);
+            int collectIndex = cursor.getColumnIndex(COLUME_COLLECT);
 
             int id = cursor.getInt(idIndex);
             String nam = cursor.getString(addressIndex);
             String number = cursor.getString(numberIndex);
+            String home = cursor.getString(homeIndex);
+            String birthday = cursor.getString(birthdayIndex);
+            String email = cursor.getString(emailIndex);
+            String collect = cursor.getString(collectIndex);
 
-            arrayList.add(new ListModel(id,number,nam,1));
+            arrayList.add(new ListModel(id,number,nam,home,birthday,email,collect,null));
         }
-
+        db.close();
         return arrayList;
     }
     public ArrayList<ListModel> getAllList_byPrivate()
@@ -328,4 +386,5 @@ public class MyDataHelper extends SQLiteOpenHelper {
         }
         return arrayList;
     }
+
 }
